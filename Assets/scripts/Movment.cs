@@ -3,24 +3,27 @@ using UnityEngine.InputSystem;
 
 public class Movment : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivity = 100f;
-
-    private float xRotation = 0f;
+    [SerializeField] private CharacterController controller;
     [SerializeField] private InputAction movment;
     [SerializeField] private InputAction jumpAction;
-    [SerializeField] private CharacterController controller;
+    [SerializeField] private InputAction shift;
     [SerializeField] Transform PlayerCamera;
+    [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private float speed = 5f;
+    [SerializeField] private float normalSpeed = 5f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private bool isGrounded;
     [SerializeField] private float SprintSpeed = 10f;
+
+    private float xRotation = 0f;
     private bool jumpPressed = false;
     private Vector3 velocity;
     private Vector2 moveInput;
 
     void OnEnable()
     {
+        shift.Enable();
         movment.Enable();
         jumpAction.Enable();
         jumpAction.performed += ctx => jumpPressed = true;
@@ -29,6 +32,7 @@ public class Movment : MonoBehaviour
 
     void OnDisable()
     {
+        shift.Disable();
         movment.Disable();
         jumpAction.performed -= ctx => jumpPressed = true;
         jumpAction.canceled -= ctx => jumpPressed = false;
@@ -49,7 +53,7 @@ public class Movment : MonoBehaviour
         ApplyGravity();
         HandleRotation(mouseY, mouseX);
         HandleMovement();
-
+        HandleShift();
         HandleJump();
 
     }
@@ -81,7 +85,17 @@ public class Movment : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
-
+    void HandleShift()
+    {
+        if (shift.IsPressed())
+        {
+            speed = SprintSpeed;
+        }
+        else
+        {
+            speed = normalSpeed;
+        }
+    }
     private void HandleRotation(float mouseY, float mouseX)
     {
         xRotation -= mouseY;
