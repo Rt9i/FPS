@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class Movment : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;
-    [SerializeField] private InputAction movment;
+    [SerializeField] public InputAction movment;
     [SerializeField] private InputAction jumpAction;
     [SerializeField] private InputAction shift;
     [SerializeField] Transform PlayerCamera;
