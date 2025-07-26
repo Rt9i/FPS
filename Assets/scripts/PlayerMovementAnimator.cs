@@ -19,7 +19,6 @@ public class PlayerMovementAnimator : MonoBehaviour
         if (currentIsMoving != previousIsMoving) 
         {
             animator.SetBool("IsMoving", currentIsMoving);
-            animator.Update(1f); 
             previousIsMoving = currentIsMoving;
         }
     }

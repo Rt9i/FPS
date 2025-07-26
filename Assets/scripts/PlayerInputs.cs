@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputs : MonoBehaviour
 {
     [SerializeField] InputAction leftClick;
+    [SerializeField] private Animator animator;
     public bool shoot = false;
 
     void OnEnable()
@@ -16,11 +17,15 @@ public class PlayerInputs : MonoBehaviour
     {
         if (leftClick.WasPressedThisFrame())
         {
+            Debug.Log("playing animation");
+            animator.Play("Fire_animation");
             shoot = true;
+
         }
         else
         {
             shoot = false;
+
         }
     }
 }
