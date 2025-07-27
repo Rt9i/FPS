@@ -8,14 +8,14 @@ public class Movment : MonoBehaviour
     [SerializeField] private InputAction jumpAction;
     [SerializeField] private InputAction shift;
     [SerializeField] Transform PlayerCamera;
-    [SerializeField] private float mouseSensitivity = 100f;
+    [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float normalSpeed = 5f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private bool isGrounded;
     [SerializeField] private float SprintSpeed = 10f;
-
+    [SerializeField] private InputAction look;
     private float xRotation = 0f;
     private bool jumpPressed = false;
     private Vector3 velocity;
@@ -23,6 +23,7 @@ public class Movment : MonoBehaviour
 
     void OnEnable()
     {
+        look.Enable();
         shift.Enable();
         movment.Enable();
         jumpAction.Enable();
@@ -32,6 +33,7 @@ public class Movment : MonoBehaviour
 
     void OnDisable()
     {
+        look.Disable();
         shift.Disable();
         movment.Disable();
         jumpAction.performed -= ctx => jumpPressed = true;
@@ -47,8 +49,10 @@ public class Movment : MonoBehaviour
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        Vector2 lookInput = look.ReadValue<Vector2>();
+        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
+        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
+        HandleRotation(mouseY, mouseX);
 
         ApplyGravity();
         HandleRotation(mouseY, mouseX);
