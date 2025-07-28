@@ -9,12 +9,7 @@ public class robot : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
+   
     void Update()
     {
         agent.SetDestination(target.position);

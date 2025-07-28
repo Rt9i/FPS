@@ -12,7 +12,10 @@ public class weapon : MonoBehaviour
         if (playerInputs.shoot)
         {
             shoot = playerInputs.shoot;
+            
             Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
+
+
             if (hit.collider)
             {
                 Debug.Log("hit a: " + hit.collider.name);
