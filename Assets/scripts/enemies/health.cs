@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class health : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI healthText;
-    [SerializeField] ParticleSystem DeathExplosion;
+    // [SerializeField] ParticleSystem DeathExplosion;
 
     [SerializeField] Image healthBar;
     [SerializeField] float maxHealth = 100;
@@ -40,8 +40,8 @@ public class health : MonoBehaviour
 
             robot.enabled = false;
 
-            DeathExplosion.Clear();
-            DeathExplosion.Play();
+            // DeathExplosion.Clear();
+            // DeathExplosion.Play();
 
 
         }
