@@ -2,41 +2,31 @@ using UnityEngine;
 
 public class weapon : MonoBehaviour
 {
-
     [SerializeField] PlayerInputs playerInputs;
     [SerializeField] Camera cam;
     [SerializeField] AudioSource gunShotSFX;
-    bool shoot;
-    float damage = 10;
+    [SerializeField] private Animator animator;
+    [SerializeField] float fireDelay = 0.25f;
     RaycastHit hit;
+    float damage = 10f;
+    float nextFireTime = 0f;
+
     void Update()
     {
-        if (playerInputs.shoot)
+        if (!playerInputs.shoot || Time.time < nextFireTime) return;
+
+
+        nextFireTime = Time.time + fireDelay;
+        Debug.Log("playing animation");
+        animator.Play("Fire_animation");
+        gunShotSFX.Play();
+
+        if (!Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity)) return;
+
+        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && hit.collider.gameObject.CompareTag("Robot"))
         {
-            shoot = playerInputs.shoot;
-            
-            Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
-
-
-            if (hit.collider)
-            {
-                Debug.Log("hit a: " + hit.collider.name);
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-                {
-                    hit.collider.gameObject.GetComponent<robot>().enabled = false;
-                }
-
-            shoot = playerInputs.shoot;
-
             Debug.Log("hit a: " + hit.collider.name);
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                hit.collider.gameObject.GetComponent<health>().Damage(damage);
-            }
-
-
-
-
+            hit.collider.gameObject.GetComponent<health>().Damage(damage);
         }
 
 
