@@ -21,10 +21,7 @@ public class weapon : MonoBehaviour
             if (hit.collider)
             {
                 Debug.Log("hit a: " + hit.collider.name);
-                // if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-                // {
-                //     hit.collider.gameObject.GetComponent<robot>().enabled = false;
-                // }
+
 
                 shoot = playerInputs.shoot;
 

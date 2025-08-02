@@ -12,18 +12,15 @@ public class health : MonoBehaviour
     [SerializeField] float HP = 100;
 
     robot robot;
-
     void Start()
     {
         robot = GetComponent<robot>();
         UpdateHealthUI();
     }
-
     void Update()
     {
         healthBar.fillAmount = HP / maxHealth;
     }
-
     private float applyDamage(float damage)
     {
         HP -= damage;
@@ -31,18 +28,14 @@ public class health : MonoBehaviour
         UpdateHealthUI();
         return HP;
     }
-
     public void Damage(float damage)
     {
         float newHP = applyDamage(damage);
         if (newHP <= 0)
         {
             robot.enabled = false;
-            // DeathExplosion.Clear();
-            // DeathExplosion.Play();
         }
     }
-
     private void UpdateHealthUI()
     {
         healthText.text = Mathf.CeilToInt(HP).ToString();
