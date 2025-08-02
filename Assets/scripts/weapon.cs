@@ -29,7 +29,7 @@ public class weapon : MonoBehaviour
                 shoot = playerInputs.shoot;
 
                 Debug.Log("hit a: " + hit.collider.name);
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                if (hit.collider.gameObject.CompareTag("Robot"))
                 {
                     hit.collider.gameObject.GetComponent<health>().Damage(damage);
                 }

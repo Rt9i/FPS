@@ -37,13 +37,9 @@ public class health : MonoBehaviour
         float newHP = applyDamage(damage);
         if (newHP <= 0)
         {
-
             robot.enabled = false;
-
             // DeathExplosion.Clear();
             // DeathExplosion.Play();
-
-
         }
     }
 
