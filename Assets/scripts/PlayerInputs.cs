@@ -4,9 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputs : NetworkBehaviour
 {
-    [SerializeField]
-    private InputAction leftClick;
-
+    [SerializeField] InputAction leftClick;
+  
     public bool shoot = false;
 
     void OnEnable()

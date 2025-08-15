@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class blockDamge : MonoBehaviour
 {
-    [SerializeField]
-    public TextMeshProUGUI text;
+    [SerializeField] public TextMeshProUGUI text;
 
     void Start()
     {
