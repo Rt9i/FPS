@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] Canvas canva;
+    [SerializeField]
+    private Camera mainCamera;
+
+    [SerializeField]
+    Canvas canva;
 
     void Start()
     {

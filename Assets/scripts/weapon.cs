@@ -1,34 +1,46 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class weapon : MonoBehaviour
+public class weapon : NetworkBehaviour
 {
-    [SerializeField] PlayerInputs playerInputs;
-    [SerializeField] Camera cam;
-    [SerializeField] AudioSource gunShotSFX;
-    [SerializeField] private Animator animator;
-    [SerializeField] float fireDelay = 0.25f;
+    [SerializeField]
+    PlayerInputs playerInputs;
+
+    [SerializeField]
+    Camera cam;
+
+    [SerializeField]
+    AudioSource gunShotSFX;
+
+    [SerializeField]
+    private Animator animator;
+
+    [SerializeField]
+    float fireDelay = 0.25f;
     RaycastHit hit;
-    float damage = 10f;
+
+    // float damage = 10f;
     float nextFireTime = 0f;
 
     void Update()
     {
-        if (!playerInputs.shoot || Time.time < nextFireTime) return;
+        if (!IsOwner)
+        {
+            animator.enabled = false;
+            return;
+        }
 
+        if (!playerInputs.shoot || Time.time < nextFireTime)
+            return;
 
         nextFireTime = Time.time + fireDelay;
-        Debug.Log("playing animation");
+
         animator.Play("Fire_animation");
         gunShotSFX.Play();
 
-        if (!Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity)) return;
-
-        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && hit.collider.gameObject.CompareTag("Robot"))
-        {
-            Debug.Log("hit a: " + hit.collider.name);
-            hit.collider.gameObject.GetComponent<health>().Damage(damage);
-        }
-
-
+        if (
+            !Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity)
+        )
+            return;
     }
 }

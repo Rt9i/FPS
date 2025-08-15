@@ -1,9 +1,11 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputs : MonoBehaviour
+public class PlayerInputs : NetworkBehaviour
 {
-    [SerializeField] InputAction leftClick;
+    [SerializeField]
+    private InputAction leftClick;
 
     public bool shoot = false;
 
@@ -12,19 +14,23 @@ public class PlayerInputs : MonoBehaviour
         leftClick.Enable();
     }
 
+    void OnDisable()
+    {
+        leftClick.Disable();
+    }
 
     void Update()
     {
+        if (!IsOwner)
+            return;
+
         if (leftClick.WasPressedThisFrame())
         {
-
             shoot = true;
-
         }
         else
         {
             shoot = false;
-
         }
     }
 }

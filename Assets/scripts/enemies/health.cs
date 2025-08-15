@@ -4,12 +4,19 @@ using UnityEngine.UI;
 
 public class health : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI healthText;
-    [SerializeField] ParticleSystem DeathExplosion;
+    [SerializeField]
+    TextMeshProUGUI healthText;
 
-    [SerializeField] Image healthBar;
-    [SerializeField] float maxHealth = 100;
-    [SerializeField] float HP = 100;
+    // [SerializeField] ParticleSystem DeathExplosion;
+
+    [SerializeField]
+    Image healthBar;
+
+    [SerializeField]
+    float maxHealth = 100;
+
+    [SerializeField]
+    float HP = 100;
 
     robot robot;
 
@@ -37,13 +44,7 @@ public class health : MonoBehaviour
         float newHP = applyDamage(damage);
         if (newHP <= 0)
         {
-
             robot.enabled = false;
-
-            DeathExplosion.Clear();
-            DeathExplosion.Play();
-
-
         }
     }
 

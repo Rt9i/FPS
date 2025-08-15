@@ -1,21 +1,47 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Movment : MonoBehaviour
+public class Movment : NetworkBehaviour
 {
-    [SerializeField] private CharacterController controller;
-    [SerializeField] public InputAction movment;
-    [SerializeField] private InputAction jumpAction;
-    [SerializeField] private InputAction shift;
-    [SerializeField] Transform PlayerCamera;
-    [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float normalSpeed = 5f;
-    [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private float SprintSpeed = 10f;
-    [SerializeField] private InputAction look;
+    [SerializeField]
+    private CharacterController controller;
+
+    [SerializeField]
+    public InputAction movment;
+
+    [SerializeField]
+    private InputAction jumpAction;
+
+    [SerializeField]
+    private InputAction shift;
+
+    [SerializeField]
+    Transform PlayerCamera;
+
+    [SerializeField]
+    private float mouseSensitivity = 2f;
+
+    [SerializeField]
+    private float speed = 5f;
+
+    [SerializeField]
+    private float normalSpeed = 5f;
+
+    [SerializeField]
+    private float gravity = -9.81f;
+
+    [SerializeField]
+    private float jumpHeight = 2f;
+
+    [SerializeField]
+    private bool isGrounded;
+
+    [SerializeField]
+    private float SprintSpeed = 10f;
+
+    [SerializeField]
+    private InputAction look;
     private float xRotation = 0f;
     private bool jumpPressed = false;
     private Vector3 velocity;
@@ -41,25 +67,34 @@ public class Movment : MonoBehaviour
         jumpAction.Disable();
     }
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if (!IsOwner)
+        {
+            PlayerCamera.gameObject.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
+        if (!IsOwner)
+            return;
+
         Vector2 lookInput = look.ReadValue<Vector2>();
+
         float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
         float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
         HandleRotation(mouseY, mouseX);
 
         ApplyGravity();
-        HandleRotation(mouseY, mouseX);
         HandleMovement();
         HandleShift();
         HandleJump();
-
     }
 
     private void HandleMovement()
@@ -77,7 +112,6 @@ public class Movment : MonoBehaviour
 
         Vector3 move = right * moveInput.x + forward * moveInput.y;
         controller.Move(move * speed * Time.deltaTime + velocity * Time.deltaTime);
-
     }
 
     void HandleJump()
@@ -89,6 +123,7 @@ public class Movment : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
+
     void HandleShift()
     {
         if (shift.IsPressed())
@@ -100,6 +135,7 @@ public class Movment : MonoBehaviour
             speed = normalSpeed;
         }
     }
+
     private void HandleRotation(float mouseY, float mouseX)
     {
         xRotation -= mouseY;
@@ -107,6 +143,7 @@ public class Movment : MonoBehaviour
         PlayerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
+
     private void ApplyGravity()
     {
         if (controller.isGrounded && velocity.y < 0)
